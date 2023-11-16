@@ -1,10 +1,13 @@
 import React from 'react';
 import './App.css';
+import DonutComponent from './components/Donout';
 
 const App = () => {
   return (
     <div>
-      <canvas className="webgl"></canvas>
+      <canvas className="webgl">
+      <DonutComponent />
+      </canvas>
       <div className="loading-bar"></div>
 
       <section className="one">
