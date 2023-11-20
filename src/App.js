@@ -1,13 +1,11 @@
 import React from 'react';
 import './App.css';
 import DonutComponent from './components/Donout';
+import { Canvas } from '@react-three/fiber';
 
 const App = () => {
   return (
     <div>
-      <canvas className="webgl">
-      <DonutComponent />
-      </canvas>
       <div className="loading-bar"></div>
 
       <section className="one">
@@ -43,6 +41,10 @@ const App = () => {
       <section className="three">
         <h1>HAPPY DONUT.</h1>
       </section>
+
+      <Canvas>
+      <DonutComponent />
+    </Canvas>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.146.0/three.min.js"></script>
       <script src="https://unpkg.com/three@0.146.0/examples/js/loaders/GLTFLoader.js"></script>

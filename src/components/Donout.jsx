@@ -1,165 +1,67 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import React, { useRef, useLayoutEffect,useEffect  } from 'react';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import gsap from 'gsap';
+import { scroller } from 'react-scroll';
 
 const DonutComponent = () => {
-  const canvasRef = useRef(null);
+  const { nodes } = useGLTF('/Robot.glb');
+
+  const donut = useRef();
+  const tl = useRef();
 
   useEffect(() => {
-    let canvas, loadingBarElement, bodyElement, scene, donut, renderer, sphereShadow;
-
-    const sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-
-    const init = () => {
-      canvas = canvasRef.current;
-      loadingBarElement = document.querySelector('.loading-bar');
-      bodyElement = document.querySelector('body');
-
-      // Loading Manager
-      const loadingManager = new THREE.LoadingManager(
-        () => {
-          window.setTimeout(() => {
-            gsap.to(donutMaterial.uniforms.uAlpha, {
-              duration: 3,
-              value: 0,
-              delay: 1,
-            });
-            gsap.to(donutMaterial.uniforms.uAlpha, {
-              duration: 3,
-              value: 0,
-              delay: 1,
-            });
-
-            loadingBarElement.classList.add('ended');
-            bodyElement.classList.add('loaded');
-            loadingBarElement.style.transform = '';
-          }, 500);
-        },
-        (itemUrl, itemsLoaded, itemsTotal) => {
-          const progressRatio = itemsLoaded / itemsTotal;
-          loadingBarElement.style.transform = `scaleX(${progressRatio})`;
-        },
-        () => {}
-      );
-
-      const gltfLoader = new GLTFLoader(loadingManager);
-
-      // Textures
-      const textureLoader = new THREE.TextureLoader();
-      const alphaShadow = textureLoader.load('/assets/texture/simpleShadow.jpg');
-
-      // Scene
-      scene = new THREE.Scene();
-
-      sphereShadow = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.5, 1.5),
-        new THREE.MeshBasicMaterial({
-          transparent: true,
-          color: 0x000000,
-          opacity: 0.5,
-          alphaMap: alphaShadow,
-        })
-      );
-
-      sphereShadow.rotation.x = -Math.PI * 0.5;
-      sphereShadow.position.y = -1;
-      sphereShadow.position.x = 1.5;
-      scene.add(sphereShadow);
-
-      // Donut Material (Overlay)
-      const donutMaterial = new THREE.ShaderMaterial({
-        vertexShader: `
-          void main() {
-            gl_Position = vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform float uAlpha;
-          void main() {
-            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
-          }
-        `,
-        uniforms: {
-          uAlpha: { value: 1.0 },
-        },
-        transparent: true,
-      });
-
-      // GLTF Model
-      gltfLoader.load(
-        '../../public/YellowDuck1glb.glb', 
-        (gltf) => {
-            console.log('GLB loaded:', gltf);
-
-          donut = gltf.scene;
-
-          const radius = 8.5;
-          donut.position.x = 1.5;
-          donut.rotation.x = Math.PI * 0.2;
-          donut.rotation.z = Math.PI * 0.15;
-          donut.scale.set(radius, radius, radius);
-          scene.add(donut);
-        },
-        (progress) => {
-          console.log(progress);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-
-      // Lights
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-      scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(1, 2, 0);
-      directionalLight.castShadow = true;
-      scene.add(directionalLight);
-
-      // Camera
-      const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 1000);
-      camera.position.z = 5;
-      scene.add(camera);
-
-      // Renderer
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      renderer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // Animation Loop
-      const clock = new THREE.Clock();
-      const animate = () => {
-        const elapsedTime = clock.getElapsedTime();
-
-        if (donut) {
-          donut.position.y = Math.sin(elapsedTime * 0.5) * 0.1 - 0.1;
-          sphereShadow.material.opacity = (1 - Math.abs(donut.position.y)) * 0.3;
-        }
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      };
-
-      animate();
-    };
-
-    init();
-
-    // Clean up Three.js objects or event listeners if needed
-    return () => {
-      // Clean up Three.js objects or event listeners
-      // ...
-    };
+    scroller.scrollTo('scroll-to-element', {
+      duration: 1500,
+      delay: 100,
+      smooth: true,
+    });
   }, []);
 
-  return <canvas ref={canvasRef} className="webgl"></canvas>;
+
+  useFrame((state, delta) => {
+    console.log('render' ,state)
+    const scrollPosition = window.scrollY; // Access scroll position here
+    tl.current.seek(scrollPosition * tl.current.duration());
+  });
+
+  useLayoutEffect(() => {
+    tl.current = gsap.timeline({
+      defaults: { duration: 2, ease: 'power1.inOut' },
+    });
+
+    tl.current
+      .to(donut.current.rotation, { y: -1 }, 2)
+      .to(donut.current.position, { x: 1 }, 2)
+
+      .to(nodes.Location_robot.rotation, { y: 1 }, 6)
+      .to(nodes.Location_robot.position, { x: -1 }, 6)
+
+      .to(donut.current.rotation, { y: 0 }, 11)
+      .to(donut.current.rotation, { x: 1 }, 11)
+      .to(donut.current.position, { x: 0 }, 11)
+
+      .to(donut.current.rotation, { y: 0 }, 13)
+      .to(donut.current.rotation, { x: -1 }, 13)
+      .to(donut.current.position, { x: 0 }, 13)
+
+      .to(donut.current.rotation, { y: 0 }, 16)
+      .to(donut.current.rotation, { x: 0 }, 16)
+      .to(donut.current.position, { x: 0 }, 16)
+
+      .to(donut.current.rotation, { y: 0 }, 20)
+      .to(donut.current.rotation, { x: 0 }, 20)
+      .to(donut.current.position, { x: 0 }, 20);
+  }, [nodes]);
+
+  return (
+    <group dispose={null} ref={donut} scale={[2, 2, 2]}>
+    <group position={[0, 0, 0]} rotation={[0, 0, 0]} scale={0.15}>
+      <mesh geometry={nodes.mesh_robot_1.geometry} material={nodes.mesh_robot_1.material} castShadow />
+      <mesh geometry={nodes.mesh_robot_3.geometry} material={nodes.mesh_robot_3.material} castShadow />
+    </group>
+  </group>
+  );
 };
 
 export default DonutComponent;
