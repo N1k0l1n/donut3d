@@ -14,8 +14,10 @@ function App() {
             <h2>Abs are Cool.</h2>
             <h3>But have you ever tried donuts?</h3>
             <Canvas dpr={[1, 2]} shadows camera={{ fov: 45 }} style={{ position: "absolute" }}>
+            <ambientLight intensity={0.5} /> 
+            <directionalLight position={[5, 5, 5]} intensity={1} />
               <PresentationControls speed={1.5} global zoom={0.5} polar={[-0.1, Math.PI / 4]}>
-                  <Model scale={0.08} />
+                  <Model scale={0.8} position={[0, -6, 5]}/>
               </PresentationControls>
             </Canvas>
             <p>

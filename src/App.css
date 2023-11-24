@@ -7,18 +7,19 @@
     padding: 0;
 }
 
-html {
-    scroll-snap-type: y mandatory;
-    
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
 }
 
 body {
     background: #ffc0cb;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
     font-family: 'Poppins', sans-serif;
-
+    overflow-y: scroll; /* Enable vertical scrolling */
+    scroll-behavior: smooth; /* Add smooth scrolling */
 }
 
 body.loaded {
@@ -33,8 +34,8 @@ body.loaded {
 }
 
 section {
-    height: 100vh;
-    width: 100vw;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
     scroll-snap-align: start;
     position: relative;
 }
