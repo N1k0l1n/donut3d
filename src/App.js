@@ -1,9 +1,9 @@
-import React from 'react';
+import { Canvas } from "@react-three/fiber";
+import Model from "./components/Model";
+import { Stage, PresentationControls } from "@react-three/drei";
 import './App.css';
-import DonutComponent from './components/Donout';
-import { Canvas } from '@react-three/fiber';
 
-const App = () => {
+function App() {
   return (
     <div>
       <div className="loading-bar"></div>
@@ -13,6 +13,11 @@ const App = () => {
           <div className="hero">
             <h2>Abs are Cool.</h2>
             <h3>But have you ever tried donuts?</h3>
+            <Canvas dpr={[1, 2]} shadows camera={{ fov: 45 }} style={{ position: "absolute" }}>
+              <PresentationControls speed={1.5} global zoom={0.5} polar={[-0.1, Math.PI / 4]}>
+                  <Model scale={0.08} />
+              </PresentationControls>
+            </Canvas>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque aliquid culpa, <br />
               providentvoluptatem excepturi id in quasi ea hic voluptate dicta amet explicabo <br />
@@ -27,7 +32,7 @@ const App = () => {
         <div className="container">
           <div className="hero">
             <h2>How we do</h2>
-            <h3>Experiment width tasty <br />donuts recipe everytime</h3>
+            <h3>Experiment with tasty <br />donuts recipe everytime</h3>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque aliquid culpa, <br />
               providentvoluptatem excepturi id in quasi ea hic voluptate dicta amet explicabo <br />
@@ -42,16 +47,13 @@ const App = () => {
         <h1>HAPPY DONUT.</h1>
       </section>
 
-      <Canvas>
-      <DonutComponent />
-    </Canvas>
-
+      {/* External scripts */}
       <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.146.0/three.min.js"></script>
       <script src="https://unpkg.com/three@0.146.0/examples/js/loaders/GLTFLoader.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
       <script src="./js/script.js"></script>
     </div>
   );
-};
+}
 
 export default App;
