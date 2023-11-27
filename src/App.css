@@ -1,45 +1,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
 
+/* Reset */
 *,
 *::before,
 *::after {
     margin: 0;
     padding: 0;
+    box-sizing: border-box; 
 }
 
-
-html, body {
+/* Body Styles */
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: #ffc0cb;
 }
 
 body {
-    background: #ffc0cb;
-    font-family: 'Poppins', sans-serif;
     overflow-y: scroll; /* Enable vertical scrolling */
     scroll-behavior: smooth; /* Add smooth scrolling */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 body.loaded {
     overflow: auto;
 }
 
+/* WebGL Container Styles */
 .webgl {
     position: fixed;
     top: 0;
     left: 0;
-    outline: none;
 }
 
+/* Section Styles */
 section {
     height: 100vh; /* Full viewport height */
     width: 100%;
     scroll-snap-align: start;
     position: relative;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
+/* Container Styles */
 section .container {
     max-width: 1360px;
     width: 100%;
@@ -61,11 +67,10 @@ section.two .container {
     grid-template-areas: '.. content';
 }
 
+/* Hero Styles */
 .hero {
     width: 100%;
     height: 100%;
-    margin-bottom: 50px;
-
     grid-area: content;
     display: flex;
     align-items: flex-start;
@@ -73,6 +78,7 @@ section.two .container {
     flex-direction: column;
 }
 
+/* Heading Styles */
 h1 {
     position: absolute;
     top: 50%;
@@ -107,6 +113,7 @@ h3 {
     width: 100%;
 }
 
+/* Paragraph Styles */
 p {
     font-size: 16px;
     line-height: 26px;
@@ -115,20 +122,3 @@ p {
     width: 100%;
 }
 
-.loading-bar {
-    position: fixed;
-    top: 50%;
-    width: 100%;
-    height: 2px;
-    z-index: 99;
-    background: #ffffff;
-    transform: scaleX(0);
-    transition: transform 0.5s;
-    transform-origin: top left;
-}
-
-.loading-bar.ended {
-    transform: scaleX(0);
-    transform-origin: 100% 0;
-    transition: transform 1.5s ease-in-out;
-}

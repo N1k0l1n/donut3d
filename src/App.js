@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import Model from "./components/Model";
-import { Stage, PresentationControls } from "@react-three/drei";
-import './App.css';
+import {  PresentationControls } from "@react-three/drei";
+import "./App.css";
 
 function App() {
   return (
@@ -13,17 +13,30 @@ function App() {
           <div className="hero">
             <h2>Abs are Cool.</h2>
             <h3>But have you ever tried donuts?</h3>
-            <Canvas dpr={[1, 2]} shadows camera={{ fov: 45 }} style={{ position: "absolute" }}>
-            <ambientLight intensity={0.5} /> 
-            <directionalLight position={[5, 5, 5]} intensity={1} />
-              <PresentationControls speed={1.5} global zoom={0.5} polar={[-0.1, Math.PI / 4]}>
-                  <Model scale={0.8} position={[0, -6, 5]}/>
+            <Canvas
+              dpr={[1, 2]}
+              shadows
+              camera={{ position: [10, 200, 200], fov: 40 }}
+              style={{ position: "absolute" }}
+            >
+              <ambientLight intensity={0.5} />
+              <directionalLight position={[5, 5, 5]} intensity={1} />
+              <PresentationControls
+                speed={1.5}
+                global
+                zoom={1.5}
+                polar={[-0.1, Math.PI / 4]}
+              >
+                <Model scale={20.8} position={[45, -8, 4]} />
               </PresentationControls>
             </Canvas>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque aliquid culpa, <br />
-              providentvoluptatem excepturi id in quasi ea hic voluptate dicta amet explicabo <br />
-              expedita ratione velit modi. Nisiquaerat illum amet quisquam iusto perferendis <br />
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Doloremque aliquid culpa, <br />
+              providentvoluptatem excepturi id in quasi ea hic voluptate dicta
+              amet explicabo <br />
+              expedita ratione velit modi. Nisiquaerat illum amet quisquam iusto
+              perferendis <br />
               ducimus aspernatur quia, repellendus beatae fugiat!
             </p>
           </div>
@@ -34,11 +47,17 @@ function App() {
         <div className="container">
           <div className="hero">
             <h2>How we do</h2>
-            <h3>Experiment with tasty <br />donuts recipe everytime</h3>
+            <h3>
+              Experiment with tasty <br />
+              donuts recipe everytime
+            </h3>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque aliquid culpa, <br />
-              providentvoluptatem excepturi id in quasi ea hic voluptate dicta amet explicabo <br />
-              expedita ratione velit modi. Nisiquaerat illum amet quisquam iusto perferendis <br />
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Doloremque aliquid culpa, <br />
+              providentvoluptatem excepturi id in quasi ea hic voluptate dicta
+              amet explicabo <br />
+              expedita ratione velit modi. Nisiquaerat illum amet quisquam iusto
+              perferendis <br />
               ducimus aspernatur quia, repellendus beatae fugiat!
             </p>
           </div>
